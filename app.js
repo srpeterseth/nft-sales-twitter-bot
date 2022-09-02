@@ -2,6 +2,7 @@
 const { createAlchemyWeb3 } = require('@alch/alchemy-web3');
 const { ethers } = require('ethers');
 const retry = require('async-retry');
+const axios = require('axios');
 const _ = require('lodash');
 // local
 const { markets } = require('./markets.js');
@@ -124,26 +125,30 @@ async function monitorContract() {
       // retrieve metadata for the first (or only) ERC21 asset sold
       const tokenData = await getTokenData(tokens[0]);
 
+      console.log(tokenData);
+        // OPTIONAL PREFERENCE - if you want the tweet to include an attached image instead of just text
+        const imageUrl = _.get(tokenData, ['asset', 'image_url']);
+    
+    
       // if more than one asset sold, link directly to etherscan tx, otherwise the marketplace item
       if (tokens.length > 1) {
-        tweet(
+        tweet.tweetWithImage(
           `${_.get(
             tokenData,
             'assetName',
-            `#` + tokens[0]
+            `#GodHatesNFTees #` + tokens[0]
           )} & other assets bought for ${totalPrice} ${currency.name} on ${
             market.name
-          } https://etherscan.io/tx/${transactionHash}`
-        );
+          } https://etherscan.io/tx/${transactionHash}`, imageUrl);
       } else {
-        tweet(
+        tweet.tweetWithImage(
           `${_.get(
             tokenData,
             'assetName',
-            `#` + tokens[0]
+            `#GodHatesNFTees #` + tokens[0]
           )} bought for ${totalPrice} ${currency.name} on ${market.name} ${
             market.site
-          }${process.env.CONTRACT_ADDRESS}/${tokens[0]}`
+          }${process.env.CONTRACT_ADDRESS}/${tokens[0]}`,image
         );
       }
     })
