@@ -130,8 +130,8 @@ async function monitorContract() {
           `${_.get(
             tokenData,
             'assetName',
-            `#GodHatesNFTees #` + tokens[0]
-          )} & other assets bought for $${Number(totalPrice).toFixed(3)} ${currency.name} on ${
+            `#` + tokens[0]
+          )} & other assets bought for ${Number(totalPrice).toFixed(3)} ${currency.name} on ${
             market.name
           } https://etherscan.io/tx/${transactionHash}`
         );
@@ -140,8 +140,8 @@ async function monitorContract() {
           `${_.get(
             tokenData,
             'assetName',
-            `#GodHatesNFTees #` + tokens[0]
-          )} bought for $${Number(totalPrice).toFixed(3)} ${currency.name} on ${market.name} ${
+            `#` + tokens[0]
+          )} bought for ${Number(totalPrice).toFixed(3)} ${currency.name} on ${market.name} ${
             market.site
           }${process.env.CONTRACT_ADDRESS}/${tokens[0]}`
         );
