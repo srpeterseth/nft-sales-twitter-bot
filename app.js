@@ -149,7 +149,7 @@ async function monitorContract() {
             `#GodHatesNFTees #` + tokens[0]
           )} bought for ${totalPrice} ${currency.name} on ${market.name} ${
             market.site
-          }${process.env.CONTRACT_ADDRESS}/${tokens[0]}`,image
+          }${process.env.CONTRACT_ADDRESS}/${tokens[0]}`,imageUrl
         );
       }
     })
