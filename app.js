@@ -2,7 +2,6 @@
 const { createAlchemyWeb3 } = require('@alch/alchemy-web3');
 const { ethers } = require('ethers');
 const retry = require('async-retry');
-const axios = require('axios');
 const _ = require('lodash');
 // local
 const { markets } = require('./markets.js');
@@ -10,7 +9,6 @@ const { getTokenData, getSeaportSalePrice } = require('./utils.js');
 const { currencies } = require('./currencies.js');
 const { transferEventTypes, saleEventTypes } = require('./log_event_types.js');
 const { tweet } = require('./tweet');
-
 const abi = require('./abi.json');
 
 // connect to Alchemy websocket
@@ -126,30 +124,26 @@ async function monitorContract() {
       // retrieve metadata for the first (or only) ERC21 asset sold
       const tokenData = await getTokenData(tokens[0]);
 
-      console.log(tokenData);
-        // OPTIONAL PREFERENCE - if you want the tweet to include an attached image instead of just text
-        const imageUrl = _.get(tokenData, ['asset', 'image_url']);
-    
-    
       // if more than one asset sold, link directly to etherscan tx, otherwise the marketplace item
       if (tokens.length > 1) {
-        tweetWithImage(
+        tweet(
           `${_.get(
             tokenData,
             'assetName',
             `#GodHatesNFTees #` + tokens[0]
-          )} & other assets bought for ${totalPrice} ${currency.name} on ${
+          )} & other assets bought for $${Number(totalPrice).toFixed(3)} ${currency.name} on ${
             market.name
-          } https://etherscan.io/tx/${transactionHash}`, imageUrl);
+          } https://etherscan.io/tx/${transactionHash}`
+        );
       } else {
-        tweetWithImage(
+        tweet(
           `${_.get(
             tokenData,
             'assetName',
             `#GodHatesNFTees #` + tokens[0]
-          )} bought for ${totalPrice} ${currency.name} on ${market.name} ${
+          )} bought for $${Number(totalPrice).toFixed(3)} ${currency.name} on ${market.name} ${
             market.site
-          }${process.env.CONTRACT_ADDRESS}/${tokens[0]}`,imageUrl
+          }${process.env.CONTRACT_ADDRESS}/${tokens[0]}`
         );
       }
     })
